@@ -1,0 +1,998 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title> Login | Register</title>
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet" />
+    <style>
+      :root {
+        --primary: #198991;
+        --primary-dark: #127077;
+        --primary-light: #e6f3f4;
+        --primary-soft: #d4ecee;
+        --text-dark: #2c3e50;
+        --text-muted: #6c757d;
+        --border-color: #e9ecef;
+        --success: #28a745;
+        --error: #dc3545;
+        --white: #ffffff;
+        --gray-light: #f8f9fa;
+      }
+
+      body {
+        
+        min-height: 100vh;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      .container {
+        padding: 20px;
+      }
+
+      /* Card Styling */
+      .auth-card {
+        border: none;
+        border-radius: 20px !important;
+        background: var(--white);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+        animation: slideUp 0.5s ease;
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Header Icon */
+      .icon-wrapper {
+        background: var(--primary) !important;
+        background: linear-gradient(
+          135deg,
+          var(--primary) 0%,
+          var(--primary-dark) 100%
+        ) !important;
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+        box-shadow: 0 10px 20px rgba(25, 137, 145, 0.3);
+      }
+
+      .icon-wrapper i {
+        color: var(--white);
+        font-size: 2rem;
+      }
+
+      /* Form Switch Buttons */
+      .form-switch-container {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 25px;
+        padding: 5px;
+        background: var(--gray-light);
+        border-radius: 12px;
+      }
+
+      .form-switch-btn {
+        flex: 1;
+        padding: 12px;
+        border: none;
+        background: transparent;
+        color: var(--text-muted);
+        font-weight: 600;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .form-switch-btn i {
+        margin-right: 8px;
+      }
+
+      .form-switch-btn:hover {
+        color: var(--primary);
+      }
+
+      .form-switch-btn.active {
+        background: var(--white);
+        color: var(--primary);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      }
+
+      /* Form Containers */
+      .form-container {
+        display: none;
+        animation: fadeIn 0.5s ease;
+      }
+
+      .form-container.active {
+        display: block;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateX(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      /* Form Controls */
+      .form-label {
+        color: var(--text-dark);
+        font-weight: 600;
+        font-size: 0.95rem;
+        margin-bottom: 8px;
+      }
+
+      .form-label i {
+        color: var(--primary);
+        margin-right: 6px;
+        font-size: 0.9rem;
+      }
+
+      .input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+
+      .form-control {
+        border: 2px solid var(--border-color);
+        border-radius: 12px;
+        padding: 12px 45px 12px 15px;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        height: auto;
+      }
+
+      .form-control:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 4px rgba(25, 137, 145, 0.1);
+        outline: none;
+      }
+
+      .form-control.error {
+        border-color: var(--error);
+        background-color: #fff8f8;
+      }
+
+      .form-control.success {
+        border-color: var(--success);
+        background-color: #f8fff8;
+      }
+
+      /* Toggle Password Button */
+      .toggle-password {
+        position: absolute;
+        right: 12px;
+        background: none;
+        border: none;
+        color: var(--text-muted);
+        cursor: pointer;
+        padding: 0;
+        font-size: 1.1rem;
+        transition: color 0.3s ease;
+        z-index: 10;
+      }
+
+      .toggle-password:hover {
+        color: var(--primary);
+      }
+
+      /* Error Message */
+      .error-message {
+        display: block;
+        margin-top: 6px;
+        font-size: 0.85rem;
+        color: var(--error);
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+        min-height: 20px;
+      }
+
+      .error-message.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Form Message */
+      .form-message {
+        padding: 12px 16px;
+        border-radius: 10px;
+        margin: 20px 0;
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        animation: slideDown 0.3s ease;
+      }
+
+      .form-message::before {
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
+      }
+
+      .form-message.success {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+
+      .form-message.success::before {
+        content: "\f00c";
+      }
+
+      .form-message.error {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+
+      .form-message.error::before {
+        content: "\f071";
+      }
+
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Primary Button */
+      .btn-primary {
+        background: var(--primary) !important;
+        border: none !important;
+        border-radius: 12px !important;
+        padding: 12px !important;
+        font-weight: 600 !important;
+        transition: all 0.3s ease !important;
+      }
+
+      .btn-primary:hover {
+        background: var(--primary-dark) !important;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(25, 137, 145, 0.3) !important;
+      }
+
+      .btn-primary:active {
+        transform: translateY(0);
+      }
+
+      /* Links */
+      .text-primary {
+        color: var(--primary) !important;
+      }
+
+      .text-primary:hover {
+        color: var(--primary-dark) !important;
+      }
+
+      .form-check-input:checked {
+        background-color: var(--primary);
+        border-color: var(--primary);
+      }
+
+      /* Password Requirements */
+      .password-requirements {
+        background: var(--gray-light);
+        padding: 12px;
+        border-radius: 10px;
+        margin-top: 15px;
+        font-size: 0.85rem;
+      }
+
+      .password-requirements p {
+        margin: 5px 0;
+        color: var(--text-muted);
+      }
+
+      .password-requirements i {
+        color: var(--primary);
+        margin-right: 8px;
+      }
+
+      /* Responsive */
+      @media (max-width: 576px) {
+        .card-body {
+          padding: 1.5rem !important;
+        }
+
+        .form-switch-btn {
+          padding: 10px;
+          font-size: 0.9rem;
+        }
+
+        .form-switch-btn i {
+          margin-right: 4px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="container d-flex justify-content-center align-items-center min-vh-100">
+      <div class="row w-100 justify-content-center">
+        <div class="col-md-8 col-lg-6 col-xl-5">
+          <div class="card auth-card">
+            <div class="card-body p-4 p-md-5">
+              <!-- Header -->
+              <div class="text-center mb-4">
+                <div class="icon-wrapper">
+                  <i class="fa-solid fa-user"></i>
+                </div>
+                <h2 class="fw-bold text-dark" id="form-title">Welcome Back</h2>
+                <p class="text-muted" id="form-subtitle">
+                  Please sign in to your account
+                </p>
+              </div>
+
+              <!-- Form Switch Buttons -->
+                <div class="form-message" id="login-message"></div>
+              <div class="form-switch-container" style="display: none;">
+                <button
+                  class="form-switch-btn active"
+                  data-form="login"
+                  id="switch-login">
+                  Login
+                </button>
+                <button
+                  class="form-switch-btn"
+                  data-form="signup"
+                  id="switch-signup">
+                  Register
+                </button>
+              </div>
+
+              <!-- Login Form Container -->
+              <div class="form-container active" id="login-form">
+                <form id="loginForm">
+                  <!-- Email -->
+                  <div class="mb-3">
+                    <label class="form-label">
+                      <i class="fa-solid fa-envelope"></i> Email Address
+                    </label>
+                    <div class="input-wrapper">
+                      <input
+                        type="email"
+                        class="form-control"
+                        id="login-email"
+                        placeholder="Enter your email..."
+                        autocomplete="off" />
+                    </div>
+                    <span class="error-message" id="login-email-error"></span>
+                  </div>
+
+                  <!-- Password with toggle -->
+                  <div class="mb-4">
+                    <label class="form-label">
+                      <i class="fa-solid fa-lock"></i> Password
+                    </label>
+                    <div class="input-wrapper">
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="login-password"
+                        placeholder="Enter your password..." />
+                      <button
+                        type="button"
+                        class="toggle-password"
+                        data-target="login-password">
+                        <i class="fa-solid fa-eye-slash"></i>
+                      </button>
+                    </div>
+                    <span
+                      class="error-message"
+                      id="login-password-error"></span>
+                  </div>
+
+                  <!-- Remember Me & Forgot Password -->
+                  <div
+                    class="d-flex justify-content-between align-items-center mb-4">
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="remember" />
+                      <label class="form-check-label" for="remember">
+                        Remember me
+                      </label>
+                    </div>
+                    <a href="#" class="text-decoration-none text-primary small"
+                      >Forgot password?</a
+                    >
+                  </div>
+
+                  <!-- Form Message -->
+                 
+
+                  <!-- Submit Button -->
+                  <div class="d-grid mb-4">
+                    <button
+                      type="submit"
+                      class="btn btn-primary btn-lg fw-semibold py-2 shadow-sm">
+                      Sign In
+                    </button>
+                  </div>
+
+                  <!-- Register Link -->
+                  <div class="text-center">
+                    <p class="text-muted mb-0">
+                      Don't have an account?
+                      <a
+                        href="#"
+                        class="text-primary fw-semibold"
+                        id="goto-signup"
+                        >Register</a
+                      >
+                    </p>
+                  </div>
+                </form>
+              </div>
+
+              <!-- Signup Form Container -->
+              <div class="form-container" id="signup-form">
+                <form id="signupForm">
+                  <!-- Email -->
+                  <div class="mb-3">
+                    <label class="form-label">
+                      <i class="fa-solid fa-envelope"></i> Email Address
+                    </label>
+                    <div class="input-wrapper">
+                      <input
+                        type="email"
+                        class="form-control"
+                        id="signup-email"
+                        placeholder="Enter your email..."
+                        autocomplete="off" />
+                    </div>
+                    <span class="error-message" id="signup-email-error"></span>
+                  </div>
+
+                  <!-- Password with toggle -->
+                  <div class="mb-3">
+                    <label class="form-label">
+                      <i class="fa-solid fa-lock"></i> Password
+                    </label>
+                    <div class="input-wrapper">
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="signup-password"
+                        placeholder="Create a password (min. 6 characters)" />
+                      <button
+                        type="button"
+                        class="toggle-password"
+                        data-target="signup-password">
+                        <i class="fa-solid fa-eye-slash"></i>
+                      </button>
+                    </div>
+                    <span
+                      class="error-message"
+                      id="signup-password-error"></span>
+                  </div>
+
+                  <!-- Confirm Password with toggle -->
+                  <div class="mb-4">
+                    <label class="form-label">
+                      <i class="fa-solid fa-check-circle"></i> Confirm Password
+                    </label>
+                    <div class="input-wrapper">
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="signup-confirm"
+                        placeholder="Confirm your password" />
+                      <button
+                        type="button"
+                        class="toggle-password"
+                        data-target="signup-confirm">
+                        <i class="fa-solid fa-eye-slash"></i>
+                      </button>
+                    </div>
+                    <span
+                      class="error-message"
+                      id="signup-confirm-error"></span>
+                  </div>
+
+                  <!-- Form Message -->
+                 
+
+                  <!-- Submit Button -->
+                  <div class="d-grid mb-4">
+                    <button
+                      type="submit"
+                      class="btn btn-primary btn-lg fw-semibold py-2 shadow-sm">
+                    Create Account
+                    </button>
+                  </div>
+
+                  <!-- Login Link -->
+                  <div class="text-center">
+                    <p class="text-muted mb-0">
+                      Already have an account?
+                      <a href="#" id="goto-login">Login</a>
+                    </p>
+                  </div>
+                </form>
+
+                <!-- Password Requirements -->
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+      // ========== DOM ELEMENTS ==========
+      const loginForm = document.getElementById("loginForm");
+      const signupForm = document.getElementById("signupForm");
+      const loginFormContainer = document.getElementById("login-form");
+      const signupFormContainer = document.getElementById("signup-form");
+      const formSwitchBtns = document.querySelectorAll(".form-switch-btn");
+      const formTitle = document.getElementById("form-title");
+      const formSubtitle = document.getElementById("form-subtitle");
+      const gotoSignup = document.getElementById("goto-signup");
+      const gotoLogin = document.getElementById("goto-login");
+
+      // ========== FIX: Create message elements if they don't exist ==========
+      if (!document.getElementById("login-message")) {
+        const loginMessageDiv = document.createElement("div");
+        loginMessageDiv.id = "login-message";
+        loginMessageDiv.className = "form-message";
+        loginMessageDiv.style.display = "none";
+        loginForm.insertBefore(loginMessageDiv, loginForm.firstChild);
+      }
+      
+      if (!document.getElementById("signup-message")) {
+        const signupMessageDiv = document.createElement("div");
+        signupMessageDiv.id = "signup-message";
+        signupMessageDiv.className = "form-message";
+        signupMessageDiv.style.display = "none";
+        signupForm.insertBefore(signupMessageDiv, signupForm.firstChild);
+      }
+
+      // Password visibility toggle functionality
+      document.querySelectorAll(".toggle-password").forEach((button) => {
+        button.addEventListener("click", function () {
+          const targetId = this.getAttribute("data-target");
+          const passwordField = document.getElementById(targetId);
+          const icon = this.querySelector("i");
+
+          if (passwordField.type === "password") {
+            passwordField.type = "text";
+            icon.classList.remove("fa-eye-slash");
+            icon.classList.add("fa-eye");
+          } else {
+            passwordField.type = "password";
+            icon.classList.remove("fa-eye");
+            icon.classList.add("fa-eye-slash");
+          }
+        });
+      });
+
+      // ========== FORM SWITCHING ==========
+      formSwitchBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const formToShow = btn.getAttribute("data-form");
+
+          // Update active button state
+          formSwitchBtns.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+
+          // Hide both forms
+          loginFormContainer.classList.remove("active");
+          signupFormContainer.classList.remove("active");
+
+          // Clear all errors and messages
+          clearFormErrors();
+          clearFormMessages();
+
+          // Clear form fields
+          clearFormFields();
+
+          // Show selected form and update title
+          if (formToShow === "login") {
+            loginFormContainer.classList.add("active");
+            formTitle.textContent = "Welcome Back";
+            formSubtitle.textContent = "Please sign in to your account";
+          } else {
+            signupFormContainer.classList.add("active");
+            formTitle.textContent = "Create Account";
+            formSubtitle.textContent = "Please fill in your details";
+          }
+        });
+      });
+
+      // Quick links
+      if (gotoSignup) {
+        gotoSignup.addEventListener("click", (e) => {
+          e.preventDefault();
+          document.querySelector('[data-form="signup"]').click();
+        });
+      }
+
+      if (gotoLogin) {
+        gotoLogin.addEventListener("click", (e) => {
+          e.preventDefault();
+          document.querySelector('[data-form="login"]').click();
+        });
+      }
+
+      // ========== VALIDATION FUNCTIONS ==========
+      function isValidEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+      }
+
+      function clearFormErrors() {
+        document.querySelectorAll(".error-message").forEach((el) => {
+          el.classList.remove("show");
+          el.textContent = "";
+        });
+
+        document.querySelectorAll(".form-control").forEach((input) => {
+          input.classList.remove("error", "success");
+        });
+      }
+
+      function clearFormMessages() {
+        const loginMsg = document.getElementById("login-message");
+        const signupMsg = document.getElementById("signup-message");
+        
+        if (loginMsg) {
+          loginMsg.style.display = "none";
+          loginMsg.className = "form-message";
+        }
+        if (signupMsg) {
+          signupMsg.style.display = "none";
+          signupMsg.className = "form-message";
+        }
+      }
+
+      function clearFormFields() {
+        document.querySelectorAll(".form-control").forEach((input) => {
+          input.value = "";
+        });
+      }
+
+      function showError(inputId, message) {
+        const input = document.getElementById(inputId);
+        const errorEl = document.getElementById(`${inputId}-error`);
+
+        if (input) {
+          input.classList.add("error");
+          input.classList.remove("success");
+        }
+
+        if (errorEl) {
+          errorEl.textContent = message;
+          errorEl.classList.add("show");
+        }
+      }
+
+      function showSuccess(inputId) {
+        const input = document.getElementById(inputId);
+        if (input) {
+          input.classList.add("success");
+          input.classList.remove("error");
+        }
+      }
+
+      function showFormMessage(formId, message, type = "success") {
+        const messageEl = document.getElementById(`${formId}-message`);
+        if (messageEl) {
+          messageEl.textContent = message;
+          messageEl.className = `form-message ${type}`;
+          messageEl.style.display = "flex";
+          
+          // Auto-hide after 5 seconds
+          setTimeout(() => {
+            if (messageEl) {
+              messageEl.style.display = "none";
+            }
+          }, 5000);
+        }
+      }
+
+      // ========== USER STORAGE (FIXED) ==========
+      function storeUser(email, password) {
+        // Store in registered users
+        const users = JSON.parse(localStorage.getItem("registeredUsers") || "{}");
+        users[email.toLowerCase()] = { 
+          email: email.toLowerCase(), 
+          password: password,
+          createdAt: new Date().toISOString()
+        };
+        localStorage.setItem("registeredUsers", JSON.stringify(users));
+        
+        // Also update dashboard users array
+        let dashboardUsers = JSON.parse(localStorage.getItem("users") || "[]");
+        const newId = dashboardUsers.length > 0 ? Math.max(...dashboardUsers.map(u => u.id)) + 1 : 1;
+        dashboardUsers.push({
+          id: newId,
+          firstName: email.split('@')[0],
+          lastName: "",
+          email: email.toLowerCase(),
+          role: "User",
+          status: "Active",
+          phone: ""
+        });
+        localStorage.setItem("users", JSON.stringify(dashboardUsers));
+      }
+
+      function getUser(email) {
+        const users = JSON.parse(localStorage.getItem("registeredUsers") || "{}");
+        return users[email.toLowerCase()] || null;
+      }
+
+      // ========== LOGIN FORM HANDLER (FIXED) ==========
+      if (loginForm) {
+        loginForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+          clearFormErrors();
+          clearFormMessages();
+
+          const email = document.getElementById("login-email").value.trim();
+          const password = document.getElementById("login-password").value;
+          const remember = document.getElementById("remember")?.checked || false;
+
+          let isValid = true;
+
+          // Email validation
+          if (!email) {
+            showError("login-email", "Email is required");
+            isValid = false;
+          } else if (!isValidEmail(email)) {
+            showError("login-email", "Please enter a valid email address");
+            isValid = false;
+          } else {
+            showSuccess("login-email");
+          }
+
+          // Password validation
+          if (!password) {
+            showError("login-password", "Password is required");
+            isValid = false;
+          } else {
+            showSuccess("login-password");
+          }
+
+          if (!isValid) {
+            showFormMessage("login", "Please fix the errors above", "error");
+            return;
+          }
+
+          // Check if user exists
+          const user = getUser(email);
+          if (!user) {
+            showError("login-email", "No account found with this email");
+            showFormMessage("login", "Please sign up first", "error");
+            return;
+          }
+
+          // Check password
+          if (user.password !== password) {
+            showError("login-password", "Incorrect password");
+            showFormMessage("login", "Login failed. Please check your credentials", "error");
+            return;
+          }
+
+          // Login successful
+          showFormMessage("login", "Welcome back! Login successful!", "success");
+
+          // Save user session
+          if (remember) {
+            localStorage.setItem("currentUser", JSON.stringify(user));
+          } else {
+            sessionStorage.setItem("currentUser", JSON.stringify(user));
+          }
+          localStorage.setItem("isLoggedIn", "true");
+
+          // Redirect to dashboard
+          setTimeout(() => {
+            window.location.href = "../index.html";
+          }, 1500);
+        });
+      }
+
+      // ========== SIGNUP FORM HANDLER (FIXED) ==========
+      if (signupForm) {
+        signupForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+          clearFormErrors();
+          clearFormMessages();
+
+          const email = document.getElementById("signup-email").value.trim();
+          const password = document.getElementById("signup-password").value;
+          const confirmPassword = document.getElementById("signup-confirm").value;
+
+          let isValid = true;
+
+          // Email validation
+          if (!email) {
+            showError("signup-email", "Email is required");
+            isValid = false;
+          } else if (!isValidEmail(email)) {
+            showError("signup-email", "Please enter a valid email address");
+            isValid = false;
+          } else {
+            // Check if email already exists
+            if (getUser(email)) {
+              showError("signup-email", "This email is already registered");
+              isValid = false;
+            } else {
+              showSuccess("signup-email");
+            }
+          }
+
+          // Password validation
+          if (!password) {
+            showError("signup-password", "Password is required");
+            isValid = false;
+          } else if (password.length < 6) {
+            showError("signup-password", "Password must be at least 6 characters");
+            isValid = false;
+          } else {
+            showSuccess("signup-password");
+          }
+
+          // Confirm password validation
+          if (!confirmPassword) {
+            showError("signup-confirm", "Please confirm your password");
+            isValid = false;
+          } else if (password !== confirmPassword) {
+            showError("signup-confirm", "Passwords do not match");
+            isValid = false;
+          } else {
+            showSuccess("signup-confirm");
+          }
+
+          if (!isValid) {
+            showFormMessage("signup", "Please fix the errors above", "error");
+            return;
+          }
+
+          // Store user
+          storeUser(email, password);
+
+          // Show success message
+          showFormMessage("signup", "Account created successfully! You can now log in.", "success");
+
+          // Clear form
+          signupForm.reset();
+
+          // Switch to login form after delay
+          setTimeout(() => {
+            document.querySelector('[data-form="login"]').click();
+            document.getElementById("login-email").value = email;
+            showFormMessage("login", "Please login with your new account", "success");
+          }, 2000);
+        });
+      }
+
+      // ========== REAL-TIME PASSWORD VALIDATION ==========
+      const passwordInput = document.getElementById("signup-password");
+      const confirmInput = document.getElementById("signup-confirm");
+
+      if (passwordInput && confirmInput) {
+        function validatePasswordMatch() {
+          const password = passwordInput.value;
+          const confirm = confirmInput.value;
+
+          if (password && confirm) {
+            if (password === confirm) {
+              confirmInput.classList.add("success");
+              confirmInput.classList.remove("error");
+              const errorEl = document.getElementById("signup-confirm-error");
+              if (errorEl) {
+                errorEl.classList.remove("show");
+                errorEl.textContent = "";
+              }
+            } else {
+              confirmInput.classList.add("error");
+              confirmInput.classList.remove("success");
+            }
+          }
+        }
+
+        passwordInput.addEventListener("input", validatePasswordMatch);
+        confirmInput.addEventListener("input", validatePasswordMatch);
+      }
+
+      // ========== ENTER KEY SUBMISSION ==========
+      document.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          if (loginFormContainer.classList.contains("active")) {
+            loginForm.dispatchEvent(new Event("submit"));
+          } else if (signupFormContainer.classList.contains("active")) {
+            signupForm.dispatchEvent(new Event("submit"));
+          }
+        }
+      });
+
+      // ========== INITIALIZE DEMO DATA ==========
+      function initializeDemoData() {
+        if (!localStorage.getItem("demoInitialized")) {
+          const demoUser = {
+            "demo@example.com": {
+              email: "demo@example.com",
+              password: "demo123",
+              createdAt: new Date().toISOString()
+            }
+          };
+          localStorage.setItem("registeredUsers", JSON.stringify(demoUser));
+          
+          // Add demo user to dashboard users
+          const dashboardUsers = [{
+            id: 1,
+            firstName: "Demo",
+            lastName: "User",
+            email: "demo@example.com",
+            role: "Admin",
+            status: "Active",
+            phone: "555-1234"
+          }];
+          localStorage.setItem("users", JSON.stringify(dashboardUsers));
+          
+          localStorage.setItem("demoInitialized", "true");
+        }
+      }
+
+      // Initialize when page loads
+      window.addEventListener("DOMContentLoaded", function() {
+        initializeDemoData();
+        
+        // Auto-focus first input
+        setTimeout(() => {
+          const firstInput = document.querySelector(".form-container.active .form-control");
+          if (firstInput) {
+            firstInput.focus();
+          }
+        }, 100);
+      });
+
+      // ========== REMOVE ERROR ON INPUT ==========
+      document.querySelectorAll(".form-control").forEach((input) => {
+        input.addEventListener("input", function () {
+          this.classList.remove("error");
+          const errorId = this.id + "-error";
+          const errorEl = document.getElementById(errorId);
+          if (errorEl) {
+            errorEl.classList.remove("show");
+            errorEl.textContent = "";
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

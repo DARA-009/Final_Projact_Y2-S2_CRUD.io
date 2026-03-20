@@ -1,0 +1,1579 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>Setec | Categories Admin</title>
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="180x180"
+      href="./image/setec.png" />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet" />
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" />
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet" />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css" />
+
+    <style>
+      /* ===== VARIABLES ===== */
+      :root {
+        --primary: #198991;
+        --dark: #1a1a1a;
+        --light: #ffffff;
+        --gray-bg: #f5f7fb;
+        --border-light: #edf2f7;
+        --transition: all 0.3s ease;
+        --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.05);
+      }
+
+      /* ===== HEADER FIXES ===== */
+      .header {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 16px 24px;
+        box-shadow: var(--shadow-md);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        top: 20px;
+        right: 30px;
+        left: calc(250px + 30px);
+        z-index: 99;
+        border: 1px solid rgba(25, 137, 145, 0.1);
+        transition: var(--transition);
+      }
+
+      .hamber {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .page-title {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .page-title h2 {
+        font-weight: 600;
+        margin: 0;
+        color: var(--dark);
+        font-size: 1.5rem;
+        line-height: 1.2;
+      }
+
+      .page-title p {
+        color: var(--primary);
+        margin: 4px 0 0 0;
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        height: 100%;
+      }
+
+      /* Search box alignment */
+      .search-box {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+
+      .search-box i {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--primary);
+        z-index: 1;
+      }
+
+      .search-box input {
+        padding: 10px 16px 10px 40px;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        width: 300px;
+        font-size: 0.95rem;
+        transition: var(--transition);
+        background: rgba(248, 250, 252, 0.8);
+        height: 45px;
+        line-height: normal;
+      }
+
+      .search-box input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(25, 137, 145, 0.2);
+      }
+
+      /* Notification button alignment */
+      .notification-btn {
+        position: relative;
+        background: #f8fafc;
+        border: none;
+        width: 45px;
+        height: 45px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--dark);
+        transition: var(--transition);
+        padding: 0;
+      }
+
+      .notification-btn:hover {
+        background: var(--primary);
+        color: white;
+      }
+
+      .notification-btn i {
+        font-size: 1.2rem;
+      }
+
+      .notification-badge {
+        position: absolute;
+        top: -3px;
+        right: -3px;
+        background: var(--dark);
+        color: white;
+        font-size: 0.7rem;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* ===== USER DROPDOWN WITH MENU ===== */
+      .user-menu-container {
+        position: relative;
+        display: inline-block;
+      }
+
+      .user-dropdown {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 6px 12px 6px 16px;
+        background: white;
+        border-radius: 40px;
+        border: 1px solid #eaeaea;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        height: 45px;
+        position: relative;
+        z-index: 100;
+      }
+
+      .user-dropdown:hover {
+        background: #f8f9fa;
+        border-color: #d0d0d0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .user-dropdown span {
+        font-size: 14px;
+        font-weight: 500;
+        color: #2c3e50;
+      }
+
+      .user-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 2px solid white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .user-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .dropdown-arrow {
+        font-size: 0.8rem;
+        color: #94a3b8;
+        transition: transform 0.3s ease;
+        margin-left: 5px;
+      }
+
+      .user-dropdown.active .dropdown-arrow {
+        transform: rotate(180deg);
+      }
+
+      /* Dropdown Menu */
+      .dropdown-menu {
+        position: absolute;
+        top: calc(100% + 10px);
+        right: 0;
+        width: 240px;
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+        z-index: 1000;
+        overflow: hidden;
+        border: 1px solid rgba(25, 137, 145, 0.1);
+      }
+
+      .dropdown-menu.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+
+      .dropdown-header {
+        padding: 16px 16px 8px 16px;
+      }
+
+      .dropdown-user-info {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .dropdown-user-info strong {
+        font-size: 1rem;
+        color: var(--dark);
+        margin-bottom: 4px;
+      }
+
+      .dropdown-user-info span {
+        font-size: 0.8rem;
+        color: var(--primary);
+      }
+
+      .dropdown-divider {
+        height: 1px;
+        background: var(--border-light);
+        margin: 8px 0;
+      }
+
+      .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        color: var(--dark);
+        text-decoration: none;
+        transition: all 0.2s ease;
+        font-size: 0.95rem;
+        cursor: pointer;
+        border: none;
+        background: none;
+        width: 100%;
+        text-align: left;
+      }
+
+      .dropdown-item:hover {
+        background: #f8fafc;
+      }
+
+      .dropdown-item i {
+        font-size: 1.2rem;
+        color: var(--primary);
+        width: 20px;
+      }
+
+      .dropdown-item.text-danger i {
+        color: #dc3545;
+      }
+
+      .dropdown-item.text-danger:hover {
+        background: #fff5f5;
+        color: #dc3545;
+      }
+
+      /* Mobile search icon */
+      .mobile-search-icon {
+        display: none;
+        width: 40px;
+        height: 40px;
+        background: #f8fafc;
+        border-radius: 12px;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: var(--primary);
+        font-size: 1.2rem;
+        transition: var(--transition);
+      }
+
+      .mobile-search-icon:hover {
+        color: white;
+      }
+
+      .mobile-search-icon i {
+        font-size: 1.2rem;
+      }
+
+      /* Mobile search overlay */
+      .mobile-search-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(10px);
+        z-index: 2000;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 80px 20px 20px 20px;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .mobile-search-overlay.active {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .mobile-search-overlay .bi-search {
+        position: absolute;
+        left: 35px;
+        top: 95px;
+        color: var(--primary);
+        font-size: 1.2rem;
+        z-index: 2001;
+      }
+
+      .mobile-search-overlay input {
+        width: 100%;
+        max-width: 500px;
+        padding: 15px 20px 15px 50px;
+        font-size: 1.1rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 30px;
+        outline: none;
+        background: white;
+        box-shadow: var(--shadow-md);
+      }
+
+      .mobile-search-overlay input:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(25, 137, 145, 0.2);
+      }
+
+      .mobile-search-close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 45px;
+        height: 45px;
+        background: var(--primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: white;
+        font-size: 1.2rem;
+        transition: var(--transition);
+        box-shadow: var(--shadow-md);
+      }
+
+      .mobile-search-close:hover {
+        background: var(--dark);
+        transform: rotate(90deg);
+      }
+
+      /* Hamburger button */
+      .hamburger-btn {
+        display: none;
+        width: 45px;
+        height: 45px;
+        background: var(--primary);
+        border: none;
+        border-radius: 12px;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+        z-index: 1000;
+        box-shadow: var(--shadow-md);
+        transition: var(--transition);
+        align-items: center;
+        justify-content: center;
+      }
+
+      .hamburger-btn:hover {
+        background-color: #1f7278;
+        transform: scale(1.05);
+      }
+
+      .hamburger-btn i {
+        font-size: 1.5rem;
+      }
+
+      @media (min-width: 769px) {
+        .hamburger-btn {
+          display: flex;
+        }
+      }
+
+      /* ===== RESPONSIVE CATEGORIES PAGE ===== */
+
+      /* Section Header */
+      .section-header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+        margin-top: 30px;
+      }
+
+      .section-header h3 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--dark);
+        margin: 0;
+      }
+
+      .btn-add {
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 10px 24px;
+        border-radius: 12px;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: var(--transition);
+        font-size: 1rem;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+
+      .btn-add:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px -5px rgba(26, 26, 26, 0.5);
+      }
+
+      .btn-add i {
+        font-size: 1.2rem;
+      }
+
+      /* Table Card */
+      .section-card {
+        background: var(--light);
+        border-radius: 20px;
+        padding: 16px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+      }
+
+      /* Table Styles */
+      .table {
+        margin: 0;
+        min-width: 600px;
+      }
+
+      .table thead th {
+        border-bottom: 2px solid rgba(25, 137, 145, 0.2);
+        color: var(--primary);
+        font-weight: 600;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 15px 12px;
+        white-space: nowrap;
+      }
+
+      .table tbody td {
+        padding: 16px 12px;
+        color: var(--dark);
+        font-weight: 500;
+        vertical-align: middle;
+        border-bottom: 1px solid var(--border-light);
+      }
+
+      /* Product Count Badge */
+      .badge-product-count {
+        background: rgba(25, 137, 145, 0.1);
+        color: var(--primary);
+        padding: 6px 14px;
+        border-radius: 30px;
+        font-weight: 500;
+        font-size: 0.85rem;
+        display: inline-block;
+        white-space: nowrap;
+      }
+
+      /* Action Buttons */
+      .action-btn {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 4px;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+
+      .btn-edit {
+        background: rgba(25, 137, 145, 0.1);
+        color: var(--primary);
+      }
+
+      .btn-edit:hover {
+        background: var(--primary);
+        color: white;
+        transform: scale(1.1);
+      }
+
+      .btn-delete {
+        background: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
+      }
+
+      .btn-delete:hover {
+        background: #dc3545;
+        color: white;
+        transform: scale(1.1);
+      }
+
+      /* Empty State */
+      .empty-state {
+        text-align: center;
+        padding: 40px 20px;
+      }
+
+      .empty-state i {
+        font-size: 4rem;
+        color: var(--primary);
+        opacity: 0.3;
+        margin-bottom: 20px;
+      }
+
+      .empty-state h5 {
+        font-size: 1.3rem;
+        color: var(--dark);
+        margin-bottom: 10px;
+      }
+
+      .empty-state p {
+        color: #64748b;
+        margin-bottom: 20px;
+      }
+
+      /* Delete Modal Header */
+      .delete-modal-header {
+        background: #dc3545 !important;
+        border-bottom: none;
+      }
+
+      /* ===== TABLET STYLES (iPad) ===== */
+      @media (min-width: 768px) and (max-width: 1024px) {
+        .header {
+          left: calc(250px + 20px);
+          right: 20px;
+          padding: 14px 20px;
+        }
+
+        .search-box input {
+          width: 220px;
+          height: 42px;
+        }
+
+        .notification-btn {
+          width: 42px;
+          height: 42px;
+        }
+
+        .user-dropdown {
+          height: 42px;
+        }
+
+        .section-header {
+          margin-top: 40px;
+        }
+
+        .section-header h3 {
+          font-size: 1.5rem;
+        }
+
+        .btn-add {
+          padding: 10px 20px;
+          font-size: 0.95rem;
+          width: auto;
+        }
+
+        .section-card {
+          padding: 20px;
+        }
+
+        .table {
+          min-width: 100%;
+        }
+
+        .table thead th {
+          padding: 15px 12px;
+          font-size: 0.9rem;
+        }
+
+        .table tbody td {
+          padding: 18px 12px;
+          font-size: 0.95rem;
+        }
+
+        .badge-product-count {
+          padding: 6px 16px;
+          font-size: 0.9rem;
+        }
+
+        .action-btn {
+          width: 40px;
+          height: 40px;
+        }
+
+        .action-btn i {
+          font-size: 1.1rem;
+        }
+
+        .dropdown-menu {
+          width: 220px;
+        }
+
+        /* Modal adjustments for iPad */
+        .modal-dialog {
+          max-width: 500px;
+          margin: 1.75rem auto;
+        }
+
+        .modal-body {
+          padding: 24px;
+        }
+
+        .modal-footer {
+          padding: 20px 24px;
+        }
+
+        .modal-footer .btn {
+          padding: 10px 24px;
+          font-size: 0.95rem;
+        }
+      }
+
+      /* ===== MOBILE STYLES (Phone) ===== */
+      @media (max-width: 767px) {
+        .header {
+          left: 15px;
+          right: 15px;
+          top: 15px;
+          padding: 12px 16px;
+        }
+
+        .hamber {
+          gap: 10px;
+        }
+
+        .page-title h2 {
+          font-size: 1.2rem;
+        }
+
+        .page-title p {
+          font-size: 0.8rem;
+        }
+
+        .hamburger-btn {
+          width: 38px;
+          height: 38px;
+        }
+
+        .hamburger-btn i {
+          font-size: 1.2rem;
+        }
+
+        .header-actions {
+          gap: 8px;
+        }
+
+        .search-box {
+          display: none;
+        }
+
+        .mobile-search-icon {
+          display: flex;
+          width: 38px;
+          height: 38px;
+        }
+
+        .notification-btn {
+          width: 38px;
+          height: 38px;
+        }
+
+        .user-dropdown {
+          padding: 4px;
+          height: 38px;
+        }
+
+        .user-dropdown span {
+          display: none;
+        }
+
+        .dropdown-arrow {
+          display: none;
+        }
+
+        .user-avatar {
+          width: 30px;
+          height: 30px;
+        }
+
+        .dropdown-menu {
+          width: 200px;
+          right: 0;
+        }
+
+        .dropdown-header {
+          padding: 12px 12px 4px 12px;
+        }
+
+        .dropdown-item {
+          padding: 10px 12px;
+          font-size: 0.9rem;
+        }
+
+        .main-content {
+          padding: 80px 12px 20px 12px;
+        }
+
+        .section-header {
+          flex-direction: column;
+          align-items: stretch;
+          margin-top: 20px;
+          gap: 12px;
+        }
+
+        .section-header h3 {
+          font-size: 1.3rem;
+          text-align: left;
+        }
+
+        .btn-add {
+          width: 100%;
+          padding: 10px 20px;
+          font-size: 1rem;
+          border-radius: 14px;
+          justify-content: center;
+        }
+
+        .btn-add i {
+          font-size: 1.3rem;
+        }
+
+        .section-card {
+          padding: 12px;
+          border-radius: 16px;
+        }
+
+        /* Horizontal scroll hint */
+        .table-responsive {
+          position: relative;
+          border-radius: 12px;
+        }
+
+        .table-responsive::after {
+          content: "← Swipe to see more →";
+          position: absolute;
+          bottom: -25px;
+          left: 50%;
+          transform: translateX(-50%);
+          font-size: 0.75rem;
+          color: var(--primary);
+          white-space: nowrap;
+          animation: fadeInOut 2s infinite;
+          pointer-events: none;
+        }
+
+        @keyframes fadeInOut {
+          0%,
+          100% {
+            opacity: 0.3;
+          }
+          50% {
+            opacity: 1;
+          }
+        }
+
+        .table-responsive.scrolled::after {
+          display: none;
+        }
+
+        .table {
+          min-width: 550px;
+        }
+
+        .table thead th {
+          padding: 12px 10px;
+          font-size: 0.8rem;
+        }
+
+        .table tbody td {
+          padding: 14px 10px;
+          font-size: 0.9rem;
+        }
+
+        .badge-product-count {
+          padding: 5px 12px;
+          font-size: 0.8rem;
+        }
+
+        .action-btn {
+          width: 36px;
+          height: 36px;
+        }
+
+        .action-btn i {
+          font-size: 1rem;
+        }
+
+        /* Empty state for mobile */
+        .empty-state {
+          padding: 30px 15px;
+        }
+
+        .empty-state i {
+          font-size: 3.5rem;
+        }
+
+        .empty-state h5 {
+          font-size: 1.2rem;
+        }
+
+        .empty-state p {
+          font-size: 0.9rem;
+        }
+
+        /* Mobile Modal Styles */
+        .modal-dialog {
+          margin: 10px;
+          max-width: calc(100% - 20px);
+        }
+
+        .modal-content {
+          border-radius: 20px;
+        }
+
+        .modal-header {
+          padding: 16px 20px;
+        }
+
+        .modal-header .modal-title {
+          font-size: 1.2rem;
+        }
+
+        .modal-body {
+          padding: 20px;
+        }
+
+        .modal-body .form-label {
+          font-size: 0.95rem;
+          margin-bottom: 6px;
+        }
+
+        .modal-body .form-control {
+          padding: 14px 16px;
+          font-size: 1rem;
+          border-radius: 14px;
+        }
+
+        .modal-body .form-text {
+          font-size: 0.8rem;
+          margin-top: 5px;
+        }
+
+        .modal-footer {
+          padding: 16px 20px;
+          gap: 10px;
+          flex-direction: column-reverse;
+        }
+
+        .modal-footer .btn {
+          width: 100%;
+          padding: 14px 20px;
+          font-size: 1rem;
+          border-radius: 14px;
+          margin: 0;
+        }
+
+        .modal-footer .btn-light {
+          background: #f1f5f9;
+          border: 1px solid #e2e8f0;
+        }
+
+        .modal-footer .btn-primary,
+        .modal-footer .btn-danger {
+          margin-bottom: 5px;
+        }
+
+        /* Delete modal specific */
+        .modal-body p {
+          font-size: 1rem;
+          line-height: 1.5;
+        }
+
+        .modal-body .text-danger {
+          font-size: 0.85rem;
+          background: #fff5f5;
+          padding: 10px;
+          border-radius: 12px;
+          margin-top: 15px !important;
+        }
+      }
+
+      /* ===== SMALL PHONES (iPhone SE, etc) ===== */
+      @media (max-width: 375px) {
+        .page-title h2 {
+          font-size: 1rem;
+        }
+
+        .page-title p {
+          font-size: 0.7rem;
+        }
+
+        .hamburger-btn {
+          width: 34px;
+          height: 34px;
+        }
+
+        .mobile-search-icon,
+        .notification-btn {
+          width: 34px;
+          height: 34px;
+        }
+
+        .user-avatar {
+          width: 26px;
+          height: 26px;
+        }
+
+        .section-header h3 {
+          font-size: 1.2rem;
+        }
+
+        .btn-add {
+          padding: 12px 16px;
+          font-size: 0.95rem;
+        }
+
+        .table {
+          min-width: 500px;
+        }
+
+        .table thead th {
+          padding: 10px 8px;
+          font-size: 0.75rem;
+        }
+
+        .table tbody td {
+          padding: 12px 8px;
+          font-size: 0.85rem;
+        }
+
+        .badge-product-count {
+          padding: 4px 10px;
+          font-size: 0.75rem;
+        }
+
+        .action-btn {
+          width: 34px;
+          height: 34px;
+        }
+
+        .dropdown-menu {
+          width: 180px;
+        }
+      }
+
+      /* Landscape mode on phones */
+      @media (max-width: 767px) and (orientation: landscape) {
+        .main-content {
+          padding: 80px 15px 15px 15px;
+        }
+
+        .section-header {
+          margin-top: 15px;
+        }
+
+        .table-responsive::after {
+          content: "← Swipe →";
+          bottom: -20px;
+        }
+
+        .modal-dialog {
+          max-width: 500px;
+          margin: 20px auto;
+        }
+
+        .modal-footer {
+          flex-direction: row;
+        }
+
+        .modal-footer .btn {
+          width: auto;
+          padding: 10px 24px;
+        }
+      }
+
+      /* iPad Landscape */
+      @media (min-width: 1025px) and (max-width: 1366px) {
+        .section-header {
+          margin-top: 50px;
+        }
+
+        .btn-add {
+          width: auto;
+        }
+
+        .table tbody td {
+          font-size: 1rem;
+        }
+      }
+
+      /* Touch-friendly improvements */
+      @media (hover: none) and (pointer: coarse) {
+        .action-btn {
+          width: 44px;
+          height: 44px;
+        }
+
+        .action-btn i {
+          font-size: 1.2rem;
+        }
+
+        .btn-add {
+          min-height: 50px;
+        }
+
+        .modal-footer .btn {
+          min-height: 50px;
+        }
+
+        .dropdown-item {
+          padding: 14px 16px;
+        }
+      }
+
+      /* Animations */
+      @keyframes searchFadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .mobile-search-overlay.active input {
+        animation: searchFadeIn 0.3s ease forwards;
+      }
+
+      @keyframes dropdownFade {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .dropdown-menu.show {
+        animation: dropdownFade 0.3s ease forwards;
+      }
+
+      /* Hide scroll hint after user scrolls */
+      .table-responsive.scrolled::after {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid g-0">
+      <div class="row g-0">
+        <!-- Fixed Sidebar -->
+        <div class="col-md-3 col-lg-2 px-0">
+          <div class="sidebar">
+            <div class="sidebar-brand">
+              <img src="./image/logo.png" width="200px" alt="Logo" />
+            </div>
+            <div class="nav-menu">
+              <div class="nav-item">
+                <a href="index.html" class="nav-link">
+                  <i class="bi bi-grid-1x2-fill"></i>
+                  <span>Dashboard</span>
+                </a>
+              </div>
+              <div class="nav-item">
+                <a href="products.html" class="nav-link">
+                  <i class="bi bi-box-seam"></i>
+                  <span>Products</span>
+                </a>
+              </div>
+              <div class="nav-item">
+                <a href="categories.html" class="nav-link active">
+                  <i class="bi bi-tags-fill"></i>
+                  <span>Categories</span>
+                </a>
+              </div>
+              <div class="nav-item">
+                <a href="orders.html" class="nav-link">
+                  <i class="bi bi-cart-check-fill"></i>
+                  <span>Orders</span>
+                </a>
+              </div>
+              <div class="nav-item">
+                <a href="users.html" class="nav-link">
+                  <i class="bi bi-people-fill"></i>
+                  <span>Users</span>
+                </a>
+              </div>
+              <div class="nav-item">
+                <a href="settings.html" class="nav-link">
+                  <i class="bi bi-gear-fill"></i>
+                  <span>Settings</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-wrapper">
+          <!-- Fixed Header -->
+          <div class="header">
+            <div class="hamber">
+              <button class="hamburger-btn" id="hamburgerBtn">
+                <i class="fas fa-bars"></i>
+              </button>
+              <div class="page-title">
+                <h2>Categories</h2>
+                <p>Manage your categories</p>
+              </div>
+            </div>
+
+            <div class="header-actions">
+              <!-- Mobile search icon -->
+              <div class="mobile-search-icon" id="mobileSearchIcon"></div>
+
+              <!-- Regular search box -->
+              <div class="search-box">
+                <i class="bi bi-search"></i>
+                <input
+                  type="text"
+                  id="searchCategories"
+                  placeholder="Search categories..." />
+              </div>
+
+              <button class="notification-btn">
+                <i class="bi bi-bell"></i>
+                <span class="notification-badge">3</span>
+              </button>
+
+              <!-- User Dropdown with Profile & Logout -->
+              <div class="user-menu-container">
+                <div class="user-dropdown" id="userDropdownBtn">
+                  <span>Dara</span>
+                  <div class="user-avatar">
+                    <img src="./image/aboutme.JPG" alt="Dara" />
+                  </div>
+                  <i class="bi bi-chevron-down dropdown-arrow"></i>
+                </div>
+
+                <!-- Dropdown Menu -->
+                <div class="dropdown-menu" id="userDropdownMenu">
+                  <div class="dropdown-header">
+                    <div class="dropdown-user-info">
+                      <strong>Dara</strong>
+                      <span>Administrator</span>
+                    </div>
+                  </div>
+                  <div class="dropdown-divider"></div>
+                  <a href="settings.html" class="dropdown-item">
+                    <i class="bi bi-gear"></i>
+                    Settings
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <a href="#" class="dropdown-item text-danger" id="logoutBtn">
+                    <i class="bi bi-box-arrow-right"></i>
+                    Logout
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mobile Search Overlay -->
+          <div class="mobile-search-overlay" id="mobileSearchOverlay">
+            <i class="bi bi-search"></i>
+            <input
+              type="text"
+              id="mobileSearchInput"
+              placeholder="Search categories..." />
+            <div class="mobile-search-close" id="mobileSearchClose">
+              <i class="bi bi-x-lg"></i>
+            </div>
+          </div>
+
+          <!-- Main Content Area -->
+          <main class="main-content">
+            <div class="section-header">
+              <h3>Categories Management</h3>
+              <button class="btn-add" onclick="openCategoryModal()">
+                <i class="bi bi-plus-lg"></i> Add New Category
+              </button>
+            </div>
+
+            <div class="section-card">
+              <div class="table-responsive" id="tableResponsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Category Name</th>
+                      <th>Total Products</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="categoriesTable">
+                    <!-- Categories will be loaded here dynamically -->
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Empty state -->
+              <div
+                id="emptyCategoriesMessage"
+                class="empty-state"
+                style="display: none">
+                <i class="bi bi-tags"></i>
+                <h5>No categories found</h5>
+                <p>
+                  Click the "Add New Category" button to create your first
+                  category.
+                </p>
+                <button
+                  class="btn-add"
+                  onclick="openCategoryModal()"
+                  style="width: auto; display: inline-flex">
+                  <i class="bi bi-plus-lg"></i> Create Category
+                </button>
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+
+    <!-- Category Modal -->
+    <div class="modal fade" id="categoryModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="categoryModalTitle">Add Category</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form
+              id="categoryForm"
+              onsubmit="
+                event.preventDefault();
+                saveCategory();
+              ">
+              <input type="hidden" id="categoryId" />
+              <div class="mb-3">
+                <label for="categoryName" class="form-label"
+                  >Category Name</label
+                >
+                <input
+                  placeholder="e.g., Electronics, Clothing"
+                  type="text"
+                  class="form-control"
+                  id="categoryName"
+                  required />
+                <div class="form-text">Category name must be unique.</div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="saveCategory()">
+              <i class="bi bi-check-lg me-1"></i> Save Category
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header delete-modal-header">
+            <h5 class="modal-title text-white">
+              <i class="bi bi-exclamation-triangle-fill me-2"></i>
+              Confirm Delete
+            </h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+              aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p class="mb-0">
+              Are you sure you want to delete
+              <strong id="deleteItemName"></strong>?
+            </p>
+            <div class="text-danger mt-3 small">
+              <i class="bi bi-info-circle me-1"></i>
+              Products in this category will not be deleted but will need to be
+              reassigned.
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+              <i class="bi bi-x-lg me-1"></i> Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              onclick="confirmDelete()">
+              <i class="bi bi-trash me-1"></i> Delete Category
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+    <script>
+      // ===== USER DROPDOWN FUNCTIONALITY =====
+      function initUserDropdown() {
+        const userDropdownBtn = document.getElementById("userDropdownBtn");
+        const userDropdownMenu = document.getElementById("userDropdownMenu");
+        const logoutBtn = document.getElementById("logoutBtn");
+
+        if (!userDropdownBtn || !userDropdownMenu) return;
+
+        // Toggle dropdown on click
+        userDropdownBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          e.preventDefault();
+          this.classList.toggle("active");
+          userDropdownMenu.classList.toggle("show");
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener("click", function (e) {
+          if (
+            !userDropdownBtn.contains(e.target) &&
+            !userDropdownMenu.contains(e.target)
+          ) {
+            userDropdownBtn.classList.remove("active");
+            userDropdownMenu.classList.remove("show");
+          }
+        });
+
+        // Close dropdown on escape key
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") {
+            userDropdownBtn.classList.remove("active");
+            userDropdownMenu.classList.remove("show");
+          }
+        });
+
+        // Prevent dropdown from closing when clicking inside menu
+        userDropdownMenu.addEventListener("click", function (e) {
+          e.stopPropagation();
+        });
+
+        // Logout functionality
+        if (logoutBtn) {
+          logoutBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            logout();
+          });
+        }
+      }
+
+      // ===== LOGOUT FUNCTION =====
+      function logout() {
+        // Show confirmation toast
+        if (typeof showToast === "function") {
+          showToast("Logging out...", "info");
+        } else {
+          alert("Logging out...");
+        }
+
+        // Clear any user session data
+        localStorage.removeItem("user");
+        localStorage.removeItem("sidebarCollapsed");
+        sessionStorage.clear();
+
+        // Redirect to login page after short delay
+        setTimeout(() => {
+          window.location.href = "./Login/login.html";
+        }, 1500);
+      }
+
+      // Page-specific initialization
+      document.addEventListener("DOMContentLoaded", function () {
+        // Ensure categories are loaded when page loads
+        if (typeof loadCategories === "function") {
+          loadCategories();
+        }
+
+        // Initialize user dropdown
+        initUserDropdown();
+
+        // Setup search functionality
+        const searchInput = document.getElementById("searchCategories");
+        if (searchInput) {
+          searchInput.addEventListener("keyup", function (e) {
+            const term = e.target.value.toLowerCase();
+            if (typeof categories !== "undefined") {
+              const filtered = categories.filter((c) =>
+                c.toLowerCase().includes(term),
+              );
+              if (typeof displayFilteredCategories === "function") {
+                displayFilteredCategories(filtered);
+              }
+            }
+          });
+        }
+
+        // Mobile search functionality
+        const mobileSearchIcon = document.getElementById("mobileSearchIcon");
+        const mobileSearchOverlay = document.getElementById(
+          "mobileSearchOverlay",
+        );
+        const mobileSearchClose = document.getElementById("mobileSearchClose");
+        const mobileSearchInput = document.getElementById("mobileSearchInput");
+
+        if (mobileSearchIcon && mobileSearchOverlay) {
+          mobileSearchIcon.addEventListener("click", function () {
+            mobileSearchOverlay.classList.add("active");
+            setTimeout(() => mobileSearchInput.focus(), 300);
+          });
+        }
+
+        if (mobileSearchClose && mobileSearchOverlay) {
+          mobileSearchClose.addEventListener("click", function () {
+            mobileSearchOverlay.classList.remove("active");
+          });
+        }
+
+        if (mobileSearchInput) {
+          mobileSearchInput.addEventListener("keyup", function (e) {
+            const term = e.target.value.toLowerCase();
+            if (typeof categories !== "undefined") {
+              const filtered = categories.filter((c) =>
+                c.toLowerCase().includes(term),
+              );
+              if (typeof displayFilteredCategories === "function") {
+                displayFilteredCategories(filtered);
+              }
+            }
+          });
+        }
+
+        // Close mobile search with Escape key
+        document.addEventListener("keydown", function (e) {
+          if (
+            e.key === "Escape" &&
+            mobileSearchOverlay?.classList.contains("active")
+          ) {
+            mobileSearchOverlay.classList.remove("active");
+          }
+        });
+
+        // Remove scroll hint after user scrolls
+        const tableResponsive = document.getElementById("tableResponsive");
+        if (tableResponsive) {
+          tableResponsive.addEventListener("scroll", function () {
+            this.classList.add("scrolled");
+          });
+        }
+
+        // Fix for iOS tap highlight
+        const buttons = document.querySelectorAll(
+          "button, .btn-add, .action-btn, .user-dropdown, .mobile-search-icon, .dropdown-item",
+        );
+        buttons.forEach((button) => {
+          button.addEventListener("touchstart", function () {}, {
+            passive: true,
+          });
+        });
+      });
+
+      // Fix for iOS modal scrolling issue
+      document.addEventListener(
+        "touchmove",
+        function (e) {
+          if (e.target.closest(".modal-content")) {
+            e.stopPropagation();
+          }
+        },
+        { passive: false },
+      );
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1579 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>Setec | Settings</title>
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="180x180"
+      href="./image/setec.png" />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet" />
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" />
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet" />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css" />
+
+    <style>
+      /* ===== SETTINGS PAGE SPECIFIC STYLES ===== */
+
+      /* Settings Container */
+      .settings-container {
+        display: flex;
+        gap: 24px;
+        margin-top: 20px;
+      }
+
+      /* Settings Sidebar */
+      .settings-sidebar {
+        width: 280px;
+        flex-shrink: 0;
+        background: white;
+        border-radius: 20px;
+        padding: 20px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.02);
+        border: 1px solid rgba(25, 137, 145, 0.1);
+        height: fit-content;
+        position: sticky;
+        top: 100px;
+      }
+
+      .settings-sidebar-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--dark);
+        padding: 0 12px 15px 12px;
+        border-bottom: 2px solid rgba(25, 137, 145, 0.1);
+        margin-bottom: 15px;
+      }
+
+      .settings-sidebar-title i {
+        color: var(--primary);
+        margin-right: 10px;
+      }
+
+      .settings-nav {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .settings-nav-item {
+        margin-bottom: 5px;
+      }
+
+      .settings-nav-link {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        color: #64748b;
+        text-decoration: none;
+        border-radius: 14px;
+        transition: var(--transition);
+        font-weight: 500;
+      }
+
+      .settings-nav-link i {
+        font-size: 1.2rem;
+        width: 24px;
+        color: var(--primary);
+        transition: var(--transition);
+      }
+
+      .settings-nav-link:hover {
+        background: rgba(25, 137, 145, 0.1);
+        color: var(--primary);
+      }
+
+      .settings-nav-link.active {
+        background: var(--primary);
+        color: white;
+      }
+
+      .settings-nav-link.active i {
+        color: white;
+      }
+
+      .settings-nav-link .badge {
+        margin-left: auto;
+        background: #dc3545;
+        color: white;
+        font-size: 0.7rem;
+        padding: 3px 8px;
+        border-radius: 30px;
+      }
+
+      /* Settings Content */
+      .settings-content {
+        flex: 1;
+        min-width: 0;
+      }
+
+      /* Settings Card */
+      .settings-card {
+        background: white;
+        border-radius: 20px;
+        padding: 28px;
+        margin-bottom: 24px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.02);
+        border: 1px solid rgba(25, 137, 145, 0.1);
+        transition: var(--transition);
+      }
+
+      .settings-card:hover {
+        box-shadow: 0 8px 30px rgba(25, 137, 145, 0.1);
+      }
+
+      .settings-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 24px;
+        padding-bottom: 16px;
+        border-bottom: 2px solid rgba(25, 137, 145, 0.1);
+      }
+
+      .settings-card-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .settings-card-title i {
+        font-size: 1.5rem;
+        color: var(--primary);
+        background: rgba(25, 137, 145, 0.1);
+        padding: 10px;
+        border-radius: 12px;
+      }
+
+      .settings-card-title h3 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--dark);
+        margin: 0;
+      }
+
+      .settings-card-title p {
+        font-size: 0.85rem;
+        color: #64748b;
+        margin: 5px 0 0 0;
+      }
+
+      /* Form Styles */
+      .settings-form .form-label {
+        font-weight: 500;
+        color: var(--dark);
+        font-size: 0.95rem;
+        margin-bottom: 8px;
+      }
+
+      .settings-form .form-control,
+      .settings-form .form-select {
+        padding: 12px 16px;
+        border: 2px solid #e2e8f0;
+        border-radius: 14px;
+        font-size: 1rem;
+        transition: var(--transition);
+      }
+
+      .settings-form .form-control:focus,
+      .settings-form .form-select:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(25, 137, 145, 0.2);
+        outline: none;
+      }
+
+      .settings-form .form-control:read-only {
+        background: #f1f5f9;
+        border-color: #e2e8f0;
+        color: #64748b;
+      }
+
+      /* Info Item */
+      .info-item {
+        background: #f8fafc;
+        padding: 16px;
+        border-radius: 16px;
+        border: 1px solid #e2e8f0;
+      }
+
+      .info-label {
+        font-size: 0.85rem;
+        color: var(--primary);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+      }
+
+      .info-value {
+        font-size: 1.1rem;
+        font-weight: 500;
+        color: var(--dark);
+      }
+
+      /* Toggle Switch */
+      .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 52px;
+        height: 28px;
+      }
+
+      .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #e2e8f0;
+        transition: 0.4s;
+        border-radius: 34px;
+      }
+
+      .toggle-slider:before {
+        position: absolute;
+        content: "";
+        height: 22px;
+        width: 22px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: 0.4s;
+        border-radius: 50%;
+      }
+
+      input:checked + .toggle-slider {
+        background-color: var(--primary);
+      }
+
+      input:checked + .toggle-slider:before {
+        transform: translateX(24px);
+      }
+
+      /* Setting Item */
+      .setting-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px;
+        background: #f8fafc;
+        border-radius: 16px;
+        margin-bottom: 12px;
+        border: 1px solid #e2e8f0;
+        transition: var(--transition);
+      }
+
+      .setting-item:hover {
+        border-color: var(--primary);
+        background: white;
+      }
+
+      .setting-info {
+        flex: 1;
+      }
+
+      .setting-info h6 {
+        font-weight: 600;
+        margin-bottom: 5px;
+        color: var(--dark);
+        font-size: 1rem;
+      }
+
+      .setting-info p {
+        font-size: 0.85rem;
+        color: #64748b;
+        margin: 0;
+      }
+
+      .setting-info .text-danger {
+        font-size: 0.8rem;
+        margin-top: 5px;
+      }
+
+      /* Color Picker */
+      .color-picker {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .color-option {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        cursor: pointer;
+        border: 3px solid transparent;
+        transition: var(--transition);
+      }
+
+      .color-option:hover {
+        transform: scale(1.1);
+      }
+
+      .color-option.active {
+        border-color: var(--dark);
+        transform: scale(1.1);
+      }
+
+      .color-option.primary {
+        background: #198991;
+      }
+      .color-option.blue {
+        background: #3b82f6;
+      }
+      .color-option.purple {
+        background: #8b5cf6;
+      }
+      .color-option.green {
+        background: #10b981;
+      }
+      .color-option.orange {
+        background: #f59e0b;
+      }
+      .color-option.red {
+        background: #ef4444;
+      }
+
+      /* API Key Display */
+      .api-key-display {
+        background: #1e293b;
+        color: #e2e8f0;
+        padding: 16px;
+        border-radius: 14px;
+        font-family: monospace;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border: 2px solid #334155;
+        margin-bottom: 16px;
+      }
+
+      .api-key-display i {
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 8px;
+        transition: var(--transition);
+      }
+
+      .api-key-display i:hover {
+        background: #334155;
+        color: white;
+      }
+
+      /* Backup Item */
+      .backup-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px;
+        background: #f8fafc;
+        border-radius: 16px;
+        margin-bottom: 12px;
+        border: 1px solid #e2e8f0;
+      }
+
+      .backup-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .backup-icon {
+        width: 45px;
+        height: 45px;
+        background: rgba(25, 137, 145, 0.1);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary);
+        font-size: 1.2rem;
+      }
+
+      .backup-details h6 {
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+
+      .backup-details p {
+        font-size: 0.8rem;
+        color: #64748b;
+        margin: 0;
+      }
+
+      .backup-size {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--dark);
+        margin-right: 20px;
+      }
+
+      /* Language Selector */
+      .language-selector {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 12px;
+        margin-top: 16px;
+      }
+
+      .language-option {
+        padding: 16px;
+        background: #f8fafc;
+        border: 2px solid #e2e8f0;
+        border-radius: 16px;
+        text-align: center;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+
+      .language-option:hover {
+        border-color: var(--primary);
+        background: white;
+      }
+
+      .language-option.active {
+        border-color: var(--primary);
+        background: rgba(25, 137, 145, 0.1);
+      }
+
+      .language-option img {
+        width: 30px;
+        height: 20px;
+        object-fit: cover;
+        border-radius: 4px;
+        margin-bottom: 8px;
+      }
+
+      .language-option span {
+        display: block;
+        font-weight: 500;
+        font-size: 0.9rem;
+      }
+
+      /* Action Buttons */
+      .settings-actions {
+        display: flex;
+        gap: 12px;
+        justify-content: flex-end;
+        margin-top: 24px;
+      }
+
+      .btn-save {
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 12px 32px;
+        border-radius: 14px;
+        font-weight: 600;
+        transition: var(--transition);
+      }
+
+      .btn-save:hover {
+        background: var(--dark);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px -5px rgba(26, 26, 26, 0.5);
+      }
+
+      .btn-reset {
+        background: white;
+        color: var(--dark);
+        border: 2px solid #e2e8f0;
+        padding: 12px 32px;
+        border-radius: 14px;
+        font-weight: 600;
+        transition: var(--transition);
+      }
+
+      .btn-reset:hover {
+        background: #f8fafc;
+        border-color: var(--primary);
+        color: var(--primary);
+      }
+
+      .btn-danger {
+        background: #dc3545;
+        color: white;
+        border: none;
+        padding: 12px 32px;
+        border-radius: 14px;
+        font-weight: 600;
+        transition: var(--transition);
+      }
+
+      .btn-danger:hover {
+        background: #b02a37;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px -5px rgba(220, 53, 69, 0.5);
+      }
+
+      /* Toast Container */
+      .toast-container {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 9999;
+      }
+
+      /* Responsive */
+      @media (max-width: 992px) {
+        .settings-container {
+          flex-direction: column;
+        }
+
+        .settings-sidebar {
+          width: 100%;
+          position: static;
+          margin-bottom: 20px;
+        }
+
+        .settings-nav {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+        }
+
+        .settings-nav-item {
+          flex: 1 1 auto;
+          min-width: 120px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .settings-card {
+          padding: 20px;
+        }
+
+        .settings-actions {
+          flex-direction: column;
+        }
+
+        .btn-save,
+        .btn-reset,
+        .btn-danger {
+          width: 100%;
+          text-align: center;
+        }
+
+        .backup-item {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 15px;
+        }
+
+        .backup-info {
+          width: 100%;
+        }
+
+        .backup-actions {
+          width: 100%;
+          display: flex;
+          gap: 10px;
+        }
+
+        .backup-actions button {
+          flex: 1;
+        }
+
+        .language-selector {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 480px) {
+        .settings-nav {
+          flex-direction: column;
+        }
+
+        .settings-nav-item {
+          width: 100%;
+        }
+
+        .setting-item {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 15px;
+        }
+
+        .toggle-switch {
+          align-self: flex-end;
+        }
+
+        .language-selector {
+          grid-template-columns: 1fr;
+        }
+      }
+      /* ===== USER DROPDOWN WITH MENU ===== */
+      .user-menu-container {
+        position: relative;
+        display: inline-block;
+      }
+
+      .user-dropdown {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 6px 12px 6px 16px;
+        background: white;
+        border-radius: 40px;
+        border: 1px solid #eaeaea;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        height: 45px;
+        position: relative;
+        z-index: 100;
+      }
+
+      .user-dropdown:hover {
+        background: #f8f9fa;
+        border-color: #d0d0d0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .user-dropdown span {
+        font-size: 14px;
+        font-weight: 500;
+        color: #2c3e50;
+      }
+
+      .user-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 2px solid white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .user-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .dropdown-arrow {
+        font-size: 0.8rem;
+        color: #94a3b8;
+        transition: transform 0.3s ease;
+      }
+
+      .user-dropdown.active .dropdown-arrow {
+        transform: rotate(180deg);
+      }
+
+      /* Dropdown Menu */
+      .dropdown-menu {
+        position: absolute;
+        top: calc(100% + 10px);
+        right: 0;
+        width: 240px;
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+        z-index: 1000;
+        overflow: hidden;
+        border: 1px solid rgba(25, 137, 145, 0.1);
+      }
+
+      .dropdown-menu.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+
+      .dropdown-header {
+        padding: 16px 16px 8px 16px;
+      }
+
+      .dropdown-user-info {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .dropdown-user-info strong {
+        font-size: 1rem;
+        color: var(--dark);
+        margin-bottom: 4px;
+      }
+
+      .dropdown-user-info span {
+        font-size: 0.8rem;
+        color: var(--primary);
+      }
+
+      .dropdown-divider {
+        height: 1px;
+        background: var(--border-light);
+        margin: 8px 0;
+      }
+
+      .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        color: var(--dark);
+        text-decoration: none;
+        transition: all 0.2s ease;
+        font-size: 0.95rem;
+        cursor: pointer;
+        border: none;
+        background: none;
+        width: 100%;
+        text-align: left;
+      }
+
+      .dropdown-item:hover {
+        background: #f8fafc;
+      }
+
+      .dropdown-item i {
+        font-size: 1.2rem;
+        color: var(--primary);
+        width: 20px;
+      }
+
+      .dropdown-item.text-danger i {
+        color: #dc3545;
+      }
+
+      .dropdown-item.text-danger:hover {
+        background: #fff5f5;
+        color: #dc3545;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid g-0">
+      <div class="row g-0">
+        <!-- Fixed Sidebar -->
+        <div class="col-md-3 col-lg-2 px-0">
+          <div class="sidebar">
+            <div class="sidebar-brand">
+              <img src="./image/logo.png" width="200px" alt="Logo" />
+            </div>
+            <div class="nav-menu">
+              <div class="nav-item">
+                <a href="index.html" class="nav-link">
+                  <i class="bi bi-grid-1x2-fill"></i>
+                  <span>Dashboard</span>
+                </a>
+              </div>
+              <div class="nav-item">
+                <a href="products.html" class="nav-link">
+                  <i class="bi bi-box-seam"></i>
+                  <span>Products</span>
+                </a>
+              </div>
+              <div class="nav-item">
+                <a href="categories.html" class="nav-link">
+                  <i class="bi bi-tags-fill"></i>
+                  <span>Categories</span>
+                </a>
+              </div>
+              <div class="nav-item">
+                <a href="orders.html" class="nav-link">
+                  <i class="bi bi-cart-check-fill"></i>
+                  <span>Orders</span>
+                </a>
+              </div>
+              <div class="nav-item">
+                <a href="users.html" class="nav-link">
+                  <i class="bi bi-people-fill"></i>
+                  <span>Users</span>
+                </a>
+              </div>
+              <div class="nav-item">
+                <a href="settings.html" class="nav-link active">
+                  <i class="bi bi-gear-fill"></i>
+                  <span>Settings</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-wrapper">
+          <!-- Fixed Header -->
+          <div class="header">
+            <div class="hamber">
+              <button class="hamburger-btn" id="hamburgerBtn">
+                <i class="fas fa-bars"></i>
+              </button>
+              <div class="page-title">
+                <h2>Settings</h2>
+                <p>Configure system preferences</p>
+              </div>
+            </div>
+
+            <div class="header-actions">
+              <div class="mobile-search-icon" id="mobileSearchIcon"></div>
+
+              <div class="search-box">
+                <i class="bi bi-search"></i>
+                <input type="text" placeholder="Search settings..." />
+              </div>
+
+              <button class="notification-btn">
+                <i class="bi bi-bell"></i>
+                <span class="notification-badge">3</span>
+              </button>
+
+              <!-- User Dropdown -->
+              <div class="user-menu-container">
+                <div class="user-dropdown" id="userDropdownBtn">
+                  <span>Dara</span>
+                  <div class="user-avatar">
+                    <img src="./image/aboutme.JPG" alt="Dara" />
+                  </div>
+                  <i class="bi bi-chevron-down dropdown-arrow"></i>
+                </div>
+
+                <!-- Dropdown Menu -->
+                <div class="dropdown-menu" id="userDropdownMenu">
+                  <div class="dropdown-header">
+                    <div class="dropdown-user-info">
+                      <strong>Dara</strong>
+                      <span>Administrator</span>
+                    </div>
+                  </div>
+                  <div class="dropdown-divider"></div>
+                  <a href="settings.html" class="dropdown-item">
+                    <i class="bi bi-gear"></i>
+                    Settings
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <a href="#" class="dropdown-item text-danger" id="logoutBtn">
+                    <i class="bi bi-box-arrow-right"></i>
+                    Logout
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mobile Search Overlay -->
+          <div class="mobile-search-overlay" id="mobileSearchOverlay">
+            <i class="bi bi-search"></i>
+            <input
+              type="text"
+              id="mobileSearchInput"
+              placeholder="Search settings..." />
+            <div class="mobile-search-close" id="mobileSearchClose">
+              <i class="bi bi-x-lg"></i>
+            </div>
+          </div>
+
+          <!-- Main Content Area -->
+          <main class="main-content">
+            <div class="settings-container">
+              <!-- Settings Sidebar Navigation -->
+              <div class="settings-sidebar">
+                <div class="settings-sidebar-title">
+                  <i class="bi bi-gear"></i> Settings Menu
+                </div>
+                <ul class="settings-nav">
+                  <li class="settings-nav-item">
+                    <a
+                      href="#general"
+                      class="settings-nav-link active"
+                      onclick="switchSettingsTab(event, 'general')">
+                      <i class="bi bi-sliders2"></i>
+                      General
+                    </a>
+                  </li>
+                  <li class="settings-nav-item">
+                    <a
+                      href="#appearance"
+                      class="settings-nav-link"
+                      onclick="switchSettingsTab(event, 'appearance')">
+                      <i class="bi bi-palette"></i>
+                      Appearance
+                    </a>
+                  </li>
+                  <li class="settings-nav-item">
+                    <a
+                      href="#notifications"
+                      class="settings-nav-link"
+                      onclick="switchSettingsTab(event, 'notifications')">
+                      <i class="bi bi-bell"></i>
+                      Notifications
+                      <span class="badge">3</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Settings Content -->
+              <div class="settings-content">
+                <!-- General Settings -->
+                <div id="general" class="settings-tab active">
+                  <div class="settings-card">
+                    <div class="settings-card-header">
+                      <div class="settings-card-title">
+                        <i class="bi bi-sliders2"></i>
+                        <div>
+                          <h3>General Settings</h3>
+                          <p>Basic system configuration</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <form class="settings-form">
+                      <div class="row">
+                        <div class="col-md-6 mb-3">
+                          <label class="form-label">Site Name</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            value="Setec E-commerce" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label class="form-label">Site URL</label>
+                          <input
+                            type="url"
+                            class="form-control"
+                            value="https://www.setec.com" />
+                        </div>
+                      </div>
+
+                      <div class="mb-3">
+                        <label class="form-label">Site Description</label>
+                        <textarea class="form-control" rows="3">
+Your trusted e-commerce platform for quality products</textarea
+                        >
+                      </div>
+
+                      <div class="mb-3">
+                        <label class="form-label">Admin Email</label>
+                        <input
+                          type="email"
+                          class="form-control"
+                          value="admin@setec.com" />
+                      </div>
+
+                      <div class="mb-3">
+                        <label class="form-label">Support Email</label>
+                        <input
+                          type="email"
+                          class="form-control"
+                          value="support@setec.com" />
+                      </div>
+
+                      <div class="mb-3">
+                        <label class="form-label">Timezone</label>
+                        <select class="form-select">
+                          <option value="UTC+7">Asia/Phnom_Penh (GMT+7)</option>
+                          <option value="UTC+8">Asia/Singapore (GMT+8)</option>
+                          <option value="UTC+9">Asia/Tokyo (GMT+9)</option>
+                        </select>
+                      </div>
+
+                      <div class="setting-item">
+                        <div class="setting-info">
+                          <h6>Maintenance Mode</h6>
+                          <p>Put your site in maintenance mode for updates</p>
+                        </div>
+                        <label class="toggle-switch">
+                          <input type="checkbox" id="maintenanceMode" />
+                          <span class="toggle-slider"></span>
+                        </label>
+                      </div>
+
+                      <div class="setting-item">
+                        <div class="setting-info">
+                          <h6>Debug Mode</h6>
+                          <p>
+                            Enable detailed error messages (development only)
+                          </p>
+                        </div>
+                        <label class="toggle-switch">
+                          <input type="checkbox" id="debugMode" />
+                          <span class="toggle-slider"></span>
+                        </label>
+                      </div>
+
+                      <div class="settings-actions">
+                        <button type="button" class="btn-reset">Reset</button>
+                        <button
+                          type="button"
+                          class="btn-save"
+                          onclick="saveSettings('general')">
+                          Save Changes
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
+                <!-- Appearance Settings -->
+                <div id="appearance" class="settings-tab" style="display: none">
+                  <div class="settings-card">
+                    <div class="settings-card-header">
+                      <div class="settings-card-title">
+                        <i class="bi bi-palette"></i>
+                        <div>
+                          <h3>Appearance</h3>
+                          <p>Customize the look and feel</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <form class="settings-form">
+                      <div class="mb-4">
+                        <label class="form-label">Theme Color</label>
+                        <div class="color-picker">
+                          <div
+                            class="color-option primary active"
+                            onclick="selectColor(this, '#198991')"
+                            title="Primary"></div>
+                          <div
+                            class="color-option blue"
+                            onclick="selectColor(this, '#3b82f6')"
+                            title="Blue"></div>
+                          <div
+                            class="color-option purple"
+                            onclick="selectColor(this, '#8b5cf6')"
+                            title="Purple"></div>
+                          <div
+                            class="color-option green"
+                            onclick="selectColor(this, '#10b981')"
+                            title="Green"></div>
+                          <div
+                            class="color-option orange"
+                            onclick="selectColor(this, '#f59e0b')"
+                            title="Orange"></div>
+                          <div
+                            class="color-option red"
+                            onclick="selectColor(this, '#ef4444')"
+                            title="Red"></div>
+                        </div>
+                      </div>
+
+                      <div class="mb-3">
+                        <label class="form-label">Logo</label>
+                        <div class="d-flex align-items-center gap-3">
+                          <img
+                            src="./image/logo.png"
+                            alt="Current Logo"
+                            style="height: 40px" />
+                          <button
+                            type="button"
+                            class="btn btn-outline-primary"
+                            onclick="uploadLogo()">
+                            <i class="bi bi-upload me-2"></i>Upload New Logo
+                          </button>
+                        </div>
+                      </div>
+
+                      <div class="mb-3">
+                        <label class="form-label">Favicon</label>
+                        <div class="d-flex align-items-center gap-3">
+                          <img
+                            src="./image/setec.png"
+                            alt="Favicon"
+                            style="width: 32px; height: 32px" />
+                          <button
+                            type="button"
+                            class="btn btn-outline-primary"
+                            onclick="uploadFavicon()">
+                            <i class="bi bi-upload me-2"></i>Upload New Favicon
+                          </button>
+                        </div>
+                      </div>
+
+                      <div class="setting-item">
+                        <div class="setting-info">
+                          <h6>Dark Mode</h6>
+                          <p>Enable dark theme for the admin panel</p>
+                        </div>
+                        <label class="toggle-switch">
+                          <input type="checkbox" id="darkMode" />
+                          <span class="toggle-slider"></span>
+                        </label>
+                      </div>
+
+                      <div class="setting-item">
+                        <div class="setting-info">
+                          <h6>Compact Mode</h6>
+                          <p>Reduce spacing for more content density</p>
+                        </div>
+                        <label class="toggle-switch">
+                          <input type="checkbox" id="compactMode" />
+                          <span class="toggle-slider"></span>
+                        </label>
+                      </div>
+
+                      <div class="settings-actions">
+                        <button type="button" class="btn-reset">Reset</button>
+                        <button
+                          type="button"
+                          class="btn-save"
+                          onclick="saveSettings('appearance')">
+                          Save Changes
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
+                <!-- Notifications Settings -->
+                <div
+                  id="notifications"
+                  class="settings-tab"
+                  style="display: none">
+                  <div class="settings-card">
+                    <div class="settings-card-header">
+                      <div class="settings-card-title">
+                        <i class="bi bi-bell"></i>
+                        <div>
+                          <h3>Notification Settings</h3>
+                          <p>Configure how you receive notifications</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <form class="settings-form">
+                      <h6 class="mb-3">Email Notifications</h6>
+
+                      <div class="setting-item">
+                        <div class="setting-info">
+                          <h6>New Orders</h6>
+                          <p>Get notified when a new order is placed</p>
+                        </div>
+                        <label class="toggle-switch">
+                          <input type="checkbox" checked id="notifyNewOrders" />
+                          <span class="toggle-slider"></span>
+                        </label>
+                      </div>
+
+                      <div class="setting-item">
+                        <div class="setting-info">
+                          <h6>New Users</h6>
+                          <p>Get notified when a new user registers</p>
+                        </div>
+                        <label class="toggle-switch">
+                          <input type="checkbox" checked id="notifyNewUsers" />
+                          <span class="toggle-slider"></span>
+                        </label>
+                      </div>
+
+                      <div class="setting-item">
+                        <div class="setting-info">
+                          <h6>Low Stock Alerts</h6>
+                          <p>Get notified when products are running low</p>
+                        </div>
+                        <label class="toggle-switch">
+                          <input type="checkbox" checked id="notifyLowStock" />
+                          <span class="toggle-slider"></span>
+                        </label>
+                      </div>
+
+                      <div class="setting-item">
+                        <div class="setting-info">
+                          <h6>System Updates</h6>
+                          <p>
+                            Get notified about system updates and maintenance
+                          </p>
+                        </div>
+                        <label class="toggle-switch">
+                          <input type="checkbox" checked id="notifyUpdates" />
+                          <span class="toggle-slider"></span>
+                        </label>
+                      </div>
+
+                      <h6 class="mb-3 mt-4">Browser Notifications</h6>
+
+                      <div class="setting-item">
+                        <div class="setting-info">
+                          <h6>Desktop Notifications</h6>
+                          <p>Show notifications in your browser</p>
+                        </div>
+                        <label class="toggle-switch">
+                          <input type="checkbox" id="browserNotifications" />
+                          <span class="toggle-slider"></span>
+                        </label>
+                      </div>
+
+                      <div class="setting-item">
+                        <div class="setting-info">
+                          <h6>Notification Sound</h6>
+                          <p>Play a sound when notifications arrive</p>
+                        </div>
+                        <label class="toggle-switch">
+                          <input
+                            type="checkbox"
+                            checked
+                            id="notificationSound" />
+                          <span class="toggle-slider"></span>
+                        </label>
+                      </div>
+
+                      <div class="settings-actions">
+                        <button type="button" class="btn-reset">Reset</button>
+                        <button
+                          type="button"
+                          class="btn-save"
+                          onclick="saveSettings('notifications')">
+                          Save Changes
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // User Dropdown Functionality
+      function initUserDropdown() {
+        const userDropdownBtn = document.getElementById("userDropdownBtn");
+        const userDropdownMenu = document.getElementById("userDropdownMenu");
+
+        if (!userDropdownBtn || !userDropdownMenu) return;
+
+        userDropdownBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          this.classList.toggle("active");
+          userDropdownMenu.classList.toggle("show");
+        });
+
+        document.addEventListener("click", function (e) {
+          if (
+            !userDropdownBtn.contains(e.target) &&
+            !userDropdownMenu.contains(e.target)
+          ) {
+            userDropdownBtn.classList.remove("active");
+            userDropdownMenu.classList.remove("show");
+          }
+        });
+
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") {
+            userDropdownBtn.classList.remove("active");
+            userDropdownMenu.classList.remove("show");
+          }
+        });
+
+        userDropdownMenu.addEventListener("click", function (e) {
+          e.stopPropagation();
+        });
+      }
+
+      // Logout Function
+      function logout() {
+        showToast("Logging out...", "info");
+
+        // Clear any user session data
+        localStorage.removeItem("user");
+        localStorage.removeItem("sidebarCollapsed");
+        sessionStorage.clear();
+
+        // Redirect to login page after short delay
+        setTimeout(() => {
+          window.location.href = "./Login/login.html";
+        }, 1500);
+      }
+
+      // Settings Tab Switching
+      function switchSettingsTab(event, tabId) {
+        event.preventDefault();
+
+        // Update active state in sidebar
+        document.querySelectorAll(".settings-nav-link").forEach((link) => {
+          link.classList.remove("active");
+        });
+        event.target.closest(".settings-nav-link").classList.add("active");
+
+        // Show selected tab
+        document.querySelectorAll(".settings-tab").forEach((tab) => {
+          tab.style.display = "none";
+        });
+        document.getElementById(tabId).style.display = "block";
+      }
+
+      // Color Picker
+      function selectColor(element, color) {
+        document.querySelectorAll(".color-option").forEach((opt) => {
+          opt.classList.remove("active");
+        });
+        element.classList.add("active");
+        document.documentElement.style.setProperty("--primary", color);
+      }
+
+      // Language Selector
+      function selectLanguage(element, lang) {
+        document.querySelectorAll(".language-option").forEach((opt) => {
+          opt.classList.remove("active");
+        });
+        element.classList.add("active");
+      }
+
+      // Save Settings
+      function saveSettings(section) {
+        showToast(`${section} settings saved successfully!`, "success");
+      }
+
+      // API Key Functions
+      function toggleApiKeyVisibility(icon) {
+        const keyDisplay = icon.parentElement.querySelector("span");
+        if (keyDisplay.textContent.includes("••••")) {
+          keyDisplay.textContent = "API_KEY_HERE";
+          icon.classList.remove("bi-eye");
+          icon.classList.add("bi-eye-slash");
+        } else {
+          keyDisplay.textContent = "sk_live_••••••••••••••••••••••";
+          icon.classList.remove("bi-eye-slash");
+          icon.classList.add("bi-eye");
+        }
+      }
+
+      function copyApiKey() {
+        navigator.clipboard.writeText("API_KEY_HERE");
+        showToast("API key copied to clipboard!", "success");
+      }
+
+      function regenerateApiKey() {
+        if (
+          confirm(
+            "Are you sure you want to regenerate the API key? This will invalidate the old key.",
+          )
+        ) {
+          showToast("API key regenerated successfully!", "success");
+        }
+      }
+
+      // Backup Functions
+      function createBackup() {
+        showToast("Creating backup...", "info");
+        setTimeout(() => {
+          showToast("Backup created successfully!", "success");
+        }, 2000);
+      }
+
+      function downloadBackup(filename) {
+        showToast(`Downloading ${filename}...`, "info");
+      }
+
+      function restoreBackup(filename) {
+        if (
+          confirm(
+            `Are you sure you want to restore ${filename}? This will overwrite current data.`,
+          )
+        ) {
+          showToast(`Restoring from ${filename}...`, "info");
+        }
+      }
+
+      function deleteBackup(filename) {
+        if (confirm(`Are you sure you want to delete ${filename}?`)) {
+          showToast(`${filename} deleted!`, "success");
+        }
+      }
+
+      // System Functions
+      function runSystemCheck() {
+        showToast("Running system check...", "info");
+        setTimeout(() => {
+          showToast(
+            "System check completed. All systems operational.",
+            "success",
+          );
+        }, 2000);
+      }
+
+      function clearCache() {
+        if (confirm("Clear system cache?")) {
+          showToast("Cache cleared successfully!", "success");
+        }
+      }
+
+      function clearLogs() {
+        if (confirm("Clear all system logs?")) {
+          showToast("System logs cleared!", "success");
+        }
+      }
+
+      function resetDatabase() {
+        if (
+          confirm(
+            'WARNING: This will reset the database. Type "RESET" to confirm.',
+          )
+        ) {
+          const confirmation = prompt(
+            'Type "RESET" to confirm database reset:',
+          );
+          if (confirmation === "RESET") {
+            showToast("Database reset initiated...", "warning");
+          }
+        }
+      }
+
+      function factoryReset() {
+        if (
+          confirm(
+            'FACTORY RESET: This will erase all data and restore default settings. Type "FACTORY RESET" to confirm.',
+          )
+        ) {
+          const confirmation = prompt('Type "FACTORY RESET" to confirm:');
+          if (confirmation === "FACTORY RESET") {
+            showToast("Factory reset initiated...", "danger");
+          }
+        }
+      }
+
+      // Upload Functions
+      function uploadLogo() {
+        showToast("Logo upload feature coming soon!", "info");
+      }
+
+      function uploadFavicon() {
+        showToast("Favicon upload feature coming soon!", "info");
+      }
+
+      // Configuration Functions
+      function configurePayment() {
+        showToast("Payment gateway configuration coming soon!", "info");
+      }
+
+      function configureEmail() {
+        showToast("Email service configuration coming soon!", "info");
+      }
+
+      function configureAnalytics() {
+        showToast("Analytics configuration coming soon!", "info");
+      }
+
+      function configureSocial() {
+        showToast("Social media integration coming soon!", "info");
+      }
+
+      // Toast Function
+      function showToast(message, type = "info") {
+        const toastContainer = document.getElementById("toastContainer");
+        const toast = document.createElement("div");
+        toast.className = `toast show align-items-center text-white bg-${type} border-0`;
+        toast.setAttribute("role", "alert");
+        toast.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body">
+                        ${message}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            `;
+        toastContainer.appendChild(toast);
+
+        setTimeout(() => {
+          toast.remove();
+        }, 3000);
+      }
+
+      // Initialize on page load
+      document.addEventListener("DOMContentLoaded", function () {
+        initUserDropdown();
+
+        // Add logout button handler
+        document
+          .getElementById("logoutBtn")
+          ?.addEventListener("click", function (e) {
+            e.preventDefault();
+            logout();
+          });
+
+        // Mobile search functionality
+        const mobileSearchIcon = document.getElementById("mobileSearchIcon");
+        const mobileSearchOverlay = document.getElementById(
+          "mobileSearchOverlay",
+        );
+        const mobileSearchClose = document.getElementById("mobileSearchClose");
+        const mobileSearchInput = document.getElementById("mobileSearchInput");
+
+        if (mobileSearchIcon && mobileSearchOverlay) {
+          mobileSearchIcon.addEventListener("click", function () {
+            mobileSearchOverlay.classList.add("active");
+            setTimeout(() => mobileSearchInput?.focus(), 300);
+          });
+        }
+
+        if (mobileSearchClose && mobileSearchOverlay) {
+          mobileSearchClose.addEventListener("click", function () {
+            mobileSearchOverlay.classList.remove("active");
+          });
+        }
+
+        // Close mobile search with Escape key
+        document.addEventListener("keydown", function (e) {
+          if (
+            e.key === "Escape" &&
+            mobileSearchOverlay?.classList.contains("active")
+          ) {
+            mobileSearchOverlay.classList.remove("active");
+          }
+        });
+
+        // Fix for iOS tap highlight
+        const buttons = document.querySelectorAll(
+          "button, .btn-add, .action-btn, .user-dropdown, .mobile-search-icon, .dropdown-item",
+        );
+        buttons.forEach((button) => {
+          button.addEventListener("touchstart", function () {}, {
+            passive: true,
+          });
+        });
+      });
+
+      // Fix for iOS modal scrolling issue
+      document.addEventListener(
+        "touchmove",
+        function (e) {
+          if (e.target.closest(".modal-content")) {
+            e.stopPropagation();
+          }
+        },
+        { passive: false },
+      );
+    </script>
+  </body>
+</html>
